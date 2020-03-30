@@ -25,7 +25,9 @@ void eddystone_beacon_init(struct eddystone_beacon *beacon, enum eddystone_type 
             struct eddystone_uid eddystone_uid = {
                 .header = eddystone_header,
                 .frame_type = EDDYSTONE_TYPE_UID,
-                .RFU = {0}
+                .RFU = {0},
+                .NID = {0},
+                .BID = {0}
             };
             memcpy(beacon->data, &eddystone_uid, sizeof(eddystone_uid));
             beacon->length = BEACON_ADV_LENGTH;
