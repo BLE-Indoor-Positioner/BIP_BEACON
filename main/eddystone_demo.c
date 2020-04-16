@@ -119,8 +119,12 @@ void app_main()
 
     // fill uid beacon
     beacon_uid.uid.tx_power = 0x20;
-    beacon_uid.uid.NID[0] = 0xDE;
-    beacon_uid.uid.NID[1] = 0xAD;
+    beacon_uid.uid.NID[0] = 0xBE;
+    beacon_uid.uid.NID[1] = 0xAC;
+    beacon_uid.uid.NID[2] = 0x01;
+    beacon_uid.uid.NID[3] = 0x10;
+
+    beacon_uid.uid.BID[0] = 0x01;
 
     // fill tlm beacon
     beacon_tlm.tlm.voltage_lsb = LSB_BYTE(3300);
@@ -136,7 +140,7 @@ void app_main()
     beacon_tlm.tlm.sec_cnt[2] = 0;
     beacon_tlm.tlm.sec_cnt[3] = 0;    
 
-    // Tell gap controller to advertise beacon_tlm
+    // Tell gap controller to advertise beacon_uid
     esp_ble_gap_config_adv_data_raw(beacon_uid.data, beacon_uid.length);
     
     while(1) {
