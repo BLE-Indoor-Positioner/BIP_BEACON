@@ -26,6 +26,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_timer.h"
+#include "string.h"
 
 #include "eddystone_beacon.h"
 
@@ -34,8 +35,8 @@ static const char *DEMO_TAG = "EDDYSTONE-DEMO";
 static void esp_gap_cb(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param_t *param);
 
 static esp_ble_adv_params_t ble_adv_params = {
-    .adv_int_min = 0x20,
-    .adv_int_max = 0x800,
+    .adv_int_min = 0x60,
+    .adv_int_max = 0x60,
     .adv_type = ADV_TYPE_NONCONN_IND,
     .own_addr_type = BLE_ADDR_TYPE_PUBLIC,
     .channel_map = ADV_CHNL_ALL,
@@ -124,7 +125,9 @@ void app_main()
     beacon_uid.uid.NID[2] = 0x01;
     beacon_uid.uid.NID[3] = 0x10;
 
-    beacon_uid.uid.BID[0] = 0x01;
+    *(uint32_t*)(beacon_uid.uid.BID) = 00UL;
+    beacon_uid.uid.BID[4] = 0xFA;
+    beacon_uid.uid.BID[5] = 0xCE;
 
     // fill tlm beacon
     beacon_tlm.tlm.voltage_lsb = LSB_BYTE(3300);
@@ -142,8 +145,4 @@ void app_main()
 
     // Tell gap controller to advertise beacon_uid
     esp_ble_gap_config_adv_data_raw(beacon_uid.data, beacon_uid.length);
-    
-    while(1) {
-        vTaskDelay(pdMS_TO_TICKS(1000));
-    }
 }
